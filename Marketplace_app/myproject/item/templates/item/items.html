@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="">
+    <div class="col-span-1">
+        <form method="GET" action="{% url 'item:items' %}" class="bg-white p-4 rounded-lg shadow">
+            <input name="query" type="text" value="{{ query }}" placeholder="Search items..." class="w-full mb-4 p-2 border border-gray-300 rounded-lg">
+            <h2 class="mb-4 text-xl font-semibold">Filter by Category</h2>
+           <div class="space-y-2">
+                {% for category in categories %}
+                    <div>
+                        <input type="checkbox" id="category_{{ category.id }}" name="category" value="{{ category.id }}" class="mr-2">
+                        <label for="category_{{ category.id }}" class="text-lg">{{ category.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="mt-4 px-4 py-2 bg-teal-500 hover:bg-teal-700 text-white rounded-lg">Apply Filters</button>
+        </form>
+</div>
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center">All items</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for item in items %}
+            <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                <a href="{% url 'item:detail' item.pk %}">
+                    <div>{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-48 object-cover rounded-md mb-4">{% else %}<div class="w-full h-48 bg-gray-200 rounded-md mb-4"><img src="{{ item_images.default.png }}" alt="Placeholder" class="w-full h-48 object-cover rounded-md mb-4"></div>{% endif %}</div>
+                    <h3 class="text-lg font-semibold mb-2">{{ item.name }}</h3>
+                    <p class="text-gray-600 mb-1">{{ item.description|truncatewords:15 }}</p>
+                    <p class="text-blue-600 font-bold">${{ item.price }}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

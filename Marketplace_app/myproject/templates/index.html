@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Newest items</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for item in items %}
+                <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                    <a href="{% url 'item:detail' item.pk %}">
+                        <div>{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-48 object-cover rounded-md mb-4">{% else %}<div class="w-full h-48 bg-gray-200 rounded-md mb-4"><img src="{{ item_images.default.png }}" alt="Placeholder" class="w-full h-48 object-cover rounded-md mb-4"></div>{% endif %}</div>
+                        <h3 class="text-lg font-semibold mb-2">{{ item.name }}</h3>
+                        <p class="text-gray-600 mb-1">{{ item.description|truncatewords:15 }}</p>
+                        <p class="text-blue-600 font-bold">${{ item.price }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Categories</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for category in categories %}
+                <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                    <a href="#">
+                        <div></div>
+                        <h3 class="text-lg font-semibold mb-2">{{ category.name }}</h3>
+                        <p class="text-gray-600 mb-1">{{ category.items.count }} items</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
